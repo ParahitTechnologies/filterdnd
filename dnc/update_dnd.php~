@@ -1,0 +1,121 @@
+<?php
+error_reporting(E_ALL);
+ini_set("display_errors", "On");
+ini_set("memory_limit", "2048M");
+$start = microtime();
+
+$f = $argv[1];
+$id = $argv[2];
+$fn = explode(".",$argv[3]);
+require_once("../common/connection.php");
+
+$dnd_data = array();
+$non_dnd = array();
+$invalid_data = array();
+$tag = $fn[0];
+$path = $ZIP_DIR;
+
+$max_count = 10000;
+$csv = array_map('str_getcsv', file($f));
+foreach($csv  as $key => $value){
+	$csv[$key] = $value[0];
+}
+
+function max_count_size($array, $max){
+	global $invalid_data;
+	$return = array();
+	$arr = array();
+	foreach($array as $v){
+		if(strlen($v)!=10){            
+			array_push($invalid_data, $v);
+		} else {
+			if(sizeof($arr) == $max){
+				$return[] = $arr;
+				$arr = array();
+			} else {
+				$arr[] = $v;
+			}
+		}
+	}
+	if(sizeof($arr) != 0 && sizeof($arr) < $max){
+		$return[] = $arr;
+	}
+	return $return;
+}
+
+$csv = max_count_size($csv, $max_count);
+$pids = array();
+
+foreach($csv as $v){
+	$pid = pcntl_fork();
+
+	if($pid == -1){
+		die("Process can't be forked."); exit(0);
+	} else if($pid) {
+		$pids[] = $pid;
+	} else {
+		$query = "select f2, f4 from dnc.dnd where f2 IN (".implode(",", $v).")";
+		$result = @mysql_query($query) or die(mysql_error());
+		if(mysql_num_rows($result)){
+			while($row = mysql_fetch_assoc($result)){
+				if($row['f4']=='A'){
+					array_push($dnd_data,$row['f2']);
+					$key = array_search($row['f2'], $v);
+					unset($v[$key]);
+				}
+			}
+			$non_dnd[] = $v;
+		}
+	}
+}
+
+foreach ($pids as $pid) {
+    pcntl_waitpid($pid, $status);
+}
+
+$non_dnd = array_filter($non_dnd);
+$dnd_data = array_filter($dnd_data);
+$invalid_data = array_filter($invalid_data);
+
+$myFile1 = $path.$tag."-non_dnd.csv";
+$myFileLocal1 = $tag."-non_dnd.csv";
+$fh = fopen($myFile1, 'w');    
+fwrite($fh, implode("\n",$non_dnd));
+@fclose($fh);    
+
+$myFile2 = $path.$tag."-dnd.csv";
+$myFileLocal2 = $tag."-dnd.csv";
+$fh = fopen($myFile2, 'w');    
+fwrite($fh, implode("\n",$dnd_data));
+@fclose($fh);    
+
+$myFile3 = $path.$tag."-error.csv";
+$myFileLocal3 = $tag."-error.csv";
+$fh = fopen($myFile3, 'w');    
+fwrite($fh, implode("\n",$invalid_data));
+@fclose($fh);  
+
+$zip = new ZipArchive();
+$filename = $path.$tag.".zip";
+
+if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
+exit("cannot open <$filename>\n");
+}
+$zip->addFile($myFile1,$myFileLocal1);
+$zip->addFile($myFile2,$myFileLocal2);
+$zip->addFile($myFile3,$myFileLocal3);
+
+echo "numfiles: " . $zip->numFiles . "\n";
+echo "status:" . $zip->status . "\n";
+$zip->close();
+
+unlink($myFile1);
+unlink($myFile2);
+unlink($myFile3);
+
+$query = "update upload_file set f_status=0,dnc_f_name='$tag.zip' where id=$id";
+$result = @mysql_query($query);   
+
+echo "Executed in ".((microtime() - $start)/1000)."s";
+?>
+

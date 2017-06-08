@@ -1,0 +1,46 @@
+a { border:none; text-decoration:none; }
+a:hover, selected, visited { border:none; }
+textarea:focus, input:focus { outline: none; color:#4A4A4A; }
+textarea { outline: none; color:#4A4A4A; }
+input:focus{ color:#4A4A4A!important;}
+textarea:focus{ color:#4A4A4A!important;}
+a { outline: 0; }
+textarea { resize: none; overflow: hidden; }
+ul, ul li { list-style-type:none; }
+.bold { font-weight: bold;}
+.clear{clear:both;}
+.left{float:left;}
+.right{ float:right }
+/********************** Header ***********************************/
+.copyRight_wrapper{ float:left; width:100%; min-width:1024px; background-color:#000; position:fixed; bottom:0px;}
+.copyRight_inner{  width:1024px; margin:0 auto;}
+.copyRight{ float:left; width:1004px; padding:10px; font-family:"Open Sans", Helvetica, Arial, sans-serif; font-size:12px; color:#7F7F7F;}
+.copyRight a{ color:#7F7F7F; text-decoration:none; padding:0 0 0 10px;} 
+.copyRight a:hover{ color:#fff; }
+.body_wrapper{ width:100%; min-width:1024px; float:left; margin-top:1px;}
+.body_inner{ width:1004px; padding:40px 10px; margin:0 auto;}
+.body_inner h1{ font-family:"Helvetica", Arial, sans-serif; font-size:30px; color:#363636; text-transform:uppercase; font-weight:normal; float:left; width:1004px; margin: 0  0 20px 0; padding: 0px;}
+.body_inner p{ float:left; width:1004px; color:#4A4A4A; line-height:20px; font-family:"Helvetica", Arial, sans-serif;  font-size:13px;}
+.body_inner p a{ color:#CC6600;}
+.body_inner p a:hover{ color:#000; text-decoration:underline}
+/************************** Contact *********************************/
+.frm { font-family:"Open Sans", Helvetica, Arial, sans-serif; font-size:12px; color:gray; line-height:22px; float: left; width: 690px; text-align: justify; margin-bottom: 90px; margin-top: 20px; }
+.ContactForm { border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; margin: 0px; }
+.tf { float:left; width:150px; font-family:"Open Sans", Helvetica, Arial, sans-serif; font-size: 12px; color: #34312E; font-weight: bold; margin-top: 7px; line-height:normal!important; }
+.ib { float:left; width:500px; margin-bottom: 15px; }
+.ib .left{float:left!important; width:auto!important;}
+.ContactForm input { border: 1px solid #919191; font-size: 12px; width: 308px; color: #1A1A1A; -moz-border-radius: 5px; border-radius: 5px; background-color:#fafafa; padding:5px 5px; font-family:"Open Sans", Helvetica, Arial, sans-serif;}
+.ContactForm textarea { display: block; border: 1px solid #919191; padding: 5px; font-size: 12px; width: 308px; height: 60px; margin: 1px 0 -1px; color: #1A1A1A; background: #fafafa; -moz-border-radius: 5px; border-radius: 5px; font-family:"Open Sans", Helvetica, Arial, sans-serif; }
+.button { background:#e25101 !important; width:100px!important; text-align:center;  color:#fff!important; cursor:pointer!important; font-size:13px!important; font-family:"Open Sans", Helvetica, Arial, sans-serif; order-radius: 0 !important; border-radius:3px; border:solid 1px #b84505 !important; }
+.button:hover{ background:#404040 !important; color:#fff; text-shadow:none; border:solid 1px #222 !important; }
+.error { color: #950b0b; float: left; margin-top: 1px; margin-left: 10px; padding-bottom: 0px; background-position: 0px 2px; }
+.red{color:#950B0B; font-weight:bold;}
+/************************** Contact End *********************************/
+
+
+.row1 {}
+.row1 td { background:#f1f1f1; padding:7px; }
+.row1 td span {color:#333 !important;}
+
+
+
